@@ -21,6 +21,7 @@ Toplantılarda sıkça yaşanan sorunlar:
 - Konuşma/sessizlik oranı
 - Otomatik transcript ve sohbet akışı
 - Analiz sonuçlarını PDF olarak indirme
+- **NOT: Analiz işlemi ses dosyasının uzunluğu , bilgisayar CPU ve RAM durumuna göre uzun sürebilir**
 
 ## ⚙ Teknik Mimari ve Çalışma Prensibi
 
@@ -120,7 +121,7 @@ Uygulama `http://localhost:3000` adresinde açılır.
 1. Web arayüzünde ses dosyası yükleyin.
 2. Analiz tamamlanınca sonuçlar ve sohbet akışı ekranda görünür.
 3. "PDF Olarak İndir" ile analiz raporunu PDF olarak kaydedebilirsiniz.
-
+**NOT: Analiz işlemi ses dosyasının uzunluğu , bilgisayar CPU ve RAM durumuna göre uzun sürebilir**
 ---
 
 ## Sorunlar ve Çözümler
@@ -134,8 +135,8 @@ Uygulama `http://localhost:3000` adresinde açılır.
 ## Screenshots
 
 <div style="display: flex; gap: 10px; justify-content: center;">
-  <img src="secreenshots/home.png" alt="home" width="500" />
-  <img src="secreenshots/analiz.png" alt="analiz" width="500" />
+  <img src="screenshots/home.png" alt="home" width="500" />
+  <img src="screenshots/analiz.png" alt="analiz" width="500" />
 </div>
 
 🎥 **Demo Video:** [Watch on YouTube](https://youtu.be/gqyuyLLWMAY)
