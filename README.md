@@ -2,6 +2,18 @@
 
 Toplantı ses kayıtlarını analiz eden, konuşmacı ayrımı, cinsiyet tahmini, konuşma/sessizlik oranı ve otomatik transcript çıkaran bir uygulama.
 
+## Proje Amacı ve Motivasyon
+
+Toplantılarda sıkça yaşanan sorunlar:
+- Bazı kişilerin konuşmaları domine etmesi  
+- Katılımcılar arasında söz hakkı eşitsizliği  
+- Toplantı verimliliğinin ölçülememesi  
+
+**Meeting Analyzer**, bu sorunlara veri odaklı bir çözüm sunar:  
+✔ Katılımın eşitliğini analiz eder  
+✔ Kapsayıcı toplantı kültürünü destekler  
+✔ Verimlilik raporları sağlar  
+
 ## Özellikler
 
 - .wav dosyası yükleyerek toplantı analizi
@@ -9,6 +21,36 @@ Toplantı ses kayıtlarını analiz eden, konuşmacı ayrımı, cinsiyet tahmini
 - Konuşma/sessizlik oranı
 - Otomatik transcript ve sohbet akışı
 - Analiz sonuçlarını PDF olarak indirme
+
+## ⚙ Teknik Mimari ve Çalışma Prensibi
+
+Meeting Analyzer, **Flask backend** ve **React frontend** ile çalışır.
+
+### **Pipeline:**
+1. **Ses Dosyası Yükleme**  
+2. **Speaker Diarization:** PyAnnote ile konuşmacı ayrımı  
+3. **Cinsiyet Tahmini:** XGBoost + Librosa feature extraction  
+4. **Transcript:** Faster-Whisper modeli  
+5. **İstatistik Hesaplama:**  
+   - Konuşma / Sessizlik oranı  
+   - Kadın / Erkek konuşma oranı  
+6. **Çıktı:** JSON + PDF rapor  
+
+---
+
+### Cinsiyet Tahmini Modeli
+
+- **Veri Seti:** [Kaggle Gender Recognition by Voice](https://www.kaggle.com/datasets/murtadhanajim/gender-recognition-by-voiceoriginal/data)  
+- **Öznitelikler:**  
+  - MFCC  
+  - Chroma  
+  - Mel Spectrogram  
+  - Spectral Contrast  
+  - Tonnetz ...
+- **Model:** XGBoost  
+- **Başarım:** %95+ doğruluk  
+- **Kaydetme:** `joblib.dump(model, 'xgboost_gender_model.pkl')`
+- Modeli eğittiğimiz kod dosyası proje içerisindedir :(https://github.com/berinackr/Meeting_Analyzer/blob/main/kaggle_gender.ipynb)
 
 ## Kurulum
 
@@ -48,6 +90,7 @@ pip install flask flask-cors werkzeug pydub pyannote.audio torch numpy scikit-le
   HUGGINGFACE_TOKEN=hf_xxx...xxx
   ```
   ekleyin.
+- Eğer kendiniz hesap açıp almak istemezseniz benim .env dosyamı buradan indirip kullanabilirsiniz. (https://drive.google.com/file/d/1xHoauNlVA249mSUTY5-xe2W5FtQZY5Pc/view?usp=sharing)
 
 ### 3. Model Dosyalarını Kontrol Edin
 
@@ -88,3 +131,11 @@ Uygulama `http://localhost:3000` adresinde açılır.
 - **Port çakışması:** 3000 (frontend) veya 5000 (backend) portları başka bir uygulama tarafından kullanılmamalı.
 
 ---
+## Screenshots
+
+<div style="display: flex; gap: 10px; justify-content: center;">
+  <img src="secreenshots/home.png" alt="home" width="500" />
+  <img src="secreenshots/analiz.png" alt="analiz" width="500" />
+</div>
+
+🎥 **Demo Video:** [Watch on YouTube](https://youtu.be/gqyuyLLWMAY)
