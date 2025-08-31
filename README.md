@@ -16,7 +16,7 @@ Toplantılarda sıkça yaşanan sorunlar:
 
 ## Özellikler
 
-- .wav dosyası yükleyerek toplantı analizi
+- .wav dosyası yükleyerek toplantı analizi (Meeting_Analyzer/src/upload  klasörü içerisine örnek ses kayıtları eklenmiştir)
 - Konuşmacı ayrımı ve cinsiyet tahmini
 - Konuşma/sessizlik oranı
 - Otomatik transcript ve sohbet akışı
