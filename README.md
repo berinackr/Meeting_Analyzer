@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+# Meeting Analyzer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Toplantı ses kayıtlarını analiz eden, konuşmacı ayrımı, cinsiyet tahmini, konuşma/sessizlik oranı ve otomatik transcript çıkaran bir uygulama.
 
-## Available Scripts
+## Özellikler
 
-In the project directory, you can run:
+- .wav dosyası yükleyerek toplantı analizi
+- Konuşmacı ayrımı ve cinsiyet tahmini
+- Konuşma/sessizlik oranı
+- Otomatik transcript ve sohbet akışı
+- Analiz sonuçlarını PDF olarak indirme
 
-### `npm start`
+## Kurulum
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 1. Depoyu Klonlayın
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+git clone https://github.com/berinackr/Meeting_Analyzer.git
+cd Meeting_Analyzer
+```
 
-### `npm test`
+### 2. Python Sanal Ortamı ve Backend Kurulumu
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Mac/Linux:
+# source venv/bin/activate
 
-### `npm run build`
+python -m pip install --upgrade pip wheel setuptools
+pip install flask flask-cors werkzeug pydub pyannote.audio torch numpy scikit-learn xgboost joblib faster-whisper soundfile
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Ekstra: ffmpeg kurulumu (pydub için gereklidir)
+- **Windows:** [ffmpeg.org/download.html](https://ffmpeg.org/download.html)
+- **Mac:** `brew install ffmpeg`
+- **Linux:** `sudo apt-get install ffmpeg`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Ekstra: libsndfile kurulumu (pyannote.audio için gerekebilir)
+- **Mac:** `brew install libsndfile`
+- **Linux:** `sudo apt-get install libsndfile1`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### HuggingFace Token
+- [HuggingFace](https://huggingface.co/) hesabı açıp bir Access Token alın.
+- `.env` dosyasına veya terminale:
+  ```
+  HUGGINGFACE_TOKEN=hf_xxx...xxx
+  ```
+  ekleyin.
 
-### `npm run eject`
+### 3. Model Dosyalarını Kontrol Edin
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+`src/` klasöründe `xgboost_gender_model.pkl` ve `scaler.pkl` dosyalarının olduğundan emin olun.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 4. Backend’i Başlatın
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+cd src
+python server.py
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 5. Frontend Kurulumu
 
-## Learn More
+```bash
+cd ..
+npm install
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Uygulama `http://localhost:3000` adresinde açılır.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## Kullanım
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Web arayüzünde ses dosyası yükleyin.
+2. Analiz tamamlanınca sonuçlar ve sohbet akışı ekranda görünür.
+3. "PDF Olarak İndir" ile analiz raporunu PDF olarak kaydedebilirsiniz.
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Sorunlar ve Çözümler
 
-### Making a Progressive Web App
+- **ffmpeg hatası:** ffmpeg sistemde kurulu ve PATH’e ekli olmalı.
+- **HuggingFace Token hatası:** Token’ı doğru eklediğinizden emin olun.
+- **Model dosyası bulunamadı:** `xgboost_gender_model.pkl` ve `scaler.pkl` dosyalarının `src/` klasöründe olduğundan emin olun.
+- **Port çakışması:** 3000 (frontend) veya 5000 (backend) portları başka bir uygulama tarafından kullanılmamalı.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
